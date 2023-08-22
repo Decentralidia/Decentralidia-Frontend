@@ -154,7 +154,7 @@ function App() {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        window.location.href = "http://localhost:3000";
+        window.location.href = "http://104.234.1.53:3000";
       } 
     })
   }
