@@ -149,7 +149,13 @@ function App() {
     MySwal.fire({
       title: <strong>Thanks For Your Participation!</strong>,
       html: <i>It would help us a lot during our study process.</i>,
-      icon: 'success'
+      icon: 'success',
+      confirmButtonText: 'Continue with New Tweets',
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        window.location.href = "http://localhost:3000";
+      } 
     })
   }
 
