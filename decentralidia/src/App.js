@@ -349,7 +349,7 @@ function App() {
 
     <div className='center-side'>
       <p className='header-text'>
-      "Please rate this tweet. A rating of <p className='green-text'>5</p> indicates that it's acceptable and it will be <p className='green-text'>Remained</p>, while a rating of <p className='red-text'>1</p> implies it should be <p className='red-text'>removed</p>.<br/><br/> Also, you can <p className='blue-text'>Like or dislike</p> a tweet, which is just identified that you like tweet or not and <p className='blue-text'>not related to removing the tweet.</p> Kindly please rate 15 tweets."
+      "Please rate this tweet. A rating of <p className='green-text'>5</p> indicates that it's acceptable and it will be <p className='green-text'>Remained</p>, while a rating of <p className='red-text'>1</p> implies it should be <p className='red-text'>removed</p>.<br/><br/> Also, you can <p className='blue-text'>like or dislike</p> a tweet, which is just identified that you like tweet or not and <p className='blue-text'>not related to removing the tweet.</p> Kindly please rate 15 tweets."
       </p>
 
       {
