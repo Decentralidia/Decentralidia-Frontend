@@ -112,6 +112,62 @@
   background-size: cover;
 }
 
+.like{
+  background: url(images/thumb_up.svg) no-repeat top left;
+  background-size: cover;
+
+  background-size: cover;
+  width: 25px;
+  height: 25px;
+  cursor:pointer;
+  border: none;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.dislike{
+  background: url(images/thumb_down.svg) no-repeat top left;
+  background-size: cover;
+
+  background-size: cover;
+  width: 25px;
+  height: 25px;
+  cursor:pointer;
+  border: none;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.like-box {
+  width: 40px;
+  height: 40px;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.like-container {
+  background-color: rgb(244, 243, 243);
+  display: inline;
+  margin: 10px;
+  height: 30px;
+  width: 45x;
+}
+
+.like-container-selected {
+  border: #8d8d8d solid 0.5px;
+  background-color: rgb(165, 165, 165);
+  display: inline;
+  margin: 10px;
+  height: 30px;
+  width: 45x;
+}
+
+.like-container:hover{
+  scale: 1.1;
+}
+
 .selected-button {
   border: 2px solid #000;
   border-radius: 7px 7px;
@@ -232,7 +288,7 @@ span {
 }
 
 .header-container {
-  padding-top: 30px;
+  padding-top: 20px;
   width: 100%;
   height: 10%;
   text-align: center;
@@ -270,16 +326,24 @@ span {
   background-size: 100% 95%;
   background-position: center;
   background-repeat: no-repeat;
+  margin-left: 20px;
 }
 
 .header-text {
   /* font-family: 'Montserrat'; */
   font-size: 19px;
   font-weight: lighter;
+  text-align: center;
 }
 
 .green-text {
   color: #00D448;
+  font-weight: bold;
+  display: inline;
+}
+
+.blue-text {
+  color: #1e79b1;
   font-weight: bold;
   display: inline;
 }
@@ -294,12 +358,14 @@ span {
   display: flex;
   justify-content: center;
   height: 270px;
+  
 }
 
 .tweet-box-2 {
   display: flex;
   justify-content: center;
-  height: 350px;
+  height: 390px;
+  margin-top: -40px;
 }
 
 .back {
@@ -546,6 +612,7 @@ body
 
 .tweet-content {
   font-size: 20px;
+  margin-top: 70px;
 }
 
 
@@ -561,4 +628,8 @@ body
   .center-side {
     width: 100%;
   }
+}
+
+.inputs-container {
+  flex-direction: column;
 }

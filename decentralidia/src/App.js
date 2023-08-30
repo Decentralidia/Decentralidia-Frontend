@@ -17,14 +17,23 @@ function App() {
   const [start, setStart] = useState(0);
   const [err, setErr] = useState(0);
   const [err2, setErr2] = useState(0);
+  const [err3, setErr3] = useState(0);
   const [selectedVote, setSelectedVote] = useState(-1);
   const [voteErr, setVoteErr] = useState(0);
   const [fullname, setFullname] = useState("");
+  const [age, setAge] = useState(0);
   const [isBack, setIsBack] = useState(0);
 
-  const getTweets = async (category, fn) => {
+  const [selectedLike, setSelectedLike] = useState("");
+  const [selectedLikes, setSelectedLikes] = useState({0:"", 1:"", 2:"", 3:"", 4:"", 5:"", 6:"", 7:"", 8:"", 9:"", 10:"", 11:"", 12:"", 13:"", 14:""});
+  
+  
+
+  const getTweets = async (category, fn, age) => {
+    console.log("age")
+    console.log(age)
     const response = await axios.get('http://127.0.0.1:8000/tweets/', {
-      params: {category: category, fullname: fn }
+      params: {category: category, fullname: fn, age:age, gender:"other"}
     });
     console.log(response.data.tweets)
     setTweets(response.data.tweets)
@@ -37,7 +46,7 @@ function App() {
     setIsBack(0);
 }, [selectedVote]);
 
-  const handleSelectedItem = (item) => {
+  const handleSelectedItem = (item, like) => {
     var b = document.getElementById('vote1');
     if (item == 1) {
       b.className = "votes vote1 selected-button";
@@ -72,10 +81,22 @@ function App() {
     } else {
       b.className = "votes vote5";
     }
+
+    console.log(selectedLike)
+    if (like == "like") {
+      document.getElementById('like-container').className = 'like-container-selected';
+      document.getElementById('dislike-container').className = 'like-container';
+      setSelectedLike("like")
+    } else if (like == "dislike") {
+      document.getElementById('like-container').className = 'like-container';
+      document.getElementById('dislike-container').className = 'like-container-selected';
+      setSelectedLike("dislike")
+    }
   }
 
   const handleNext = async (e) => {
     console.log(selectedVote)
+
     if (selectedVote === -1 && start === 1) {
       setVoteErr(1)
       return;
@@ -84,14 +105,17 @@ function App() {
     if (start === 0) {
       // document.getElementById('tweet-box').className = 'tweet-box backgroundAnimated-green';
       // var fullname = document.getElementById('name').value;
-      if (document.querySelector('input[name="cat"]:checked') !== null && document.getElementById('fullname').value != '') {
+      if (document.querySelector('input[name="cat"]:checked') !== null && document.getElementById('fullname').value != '' && document.getElementById('age').value != '') {
         var category = document.querySelector('input[name="cat"]:checked').id;
         console.log(category)
         setStart(1);
 
         const fn = document.getElementById('fullname').value.toLowerCase();
         setFullname(fn)
-        getTweets(category, fn)
+
+        const age = document.getElementById('age').value.toLowerCase();
+        setAge(age)
+        getTweets(category, fn, age)
 
         document.getElementById('back').className = 'back';
         setVoteErr(0)
@@ -110,11 +134,20 @@ function App() {
       } else {
         setErr2(0);
       }
+      if (document.getElementById('age').value === '') {
+        setErr3(1);
+      } else {
+        setErr3(0);
+      }
       
       return;
     }
     e.preventDefault()
     if(tweetId < tweets.length) {
+      setSelectedLike("")
+      document.getElementById('like-container').className = 'like-container';
+      document.getElementById('dislike-container').className = 'like-container';
+      
       if (color === 0) {
         document.getElementById('tweetContainer').className = 'tweetContainer backgroundAnimated-red';
       } else if (color === 1) {
@@ -123,11 +156,11 @@ function App() {
         document.getElementById('tweetContainer').className = 'tweetContainer backgroundAnimated-green';
       }
       setTweetId(tweetId+1)
-      handleSelectedItem(selectedTweets[tweetId+1])
+      handleSelectedItem(selectedTweets[tweetId+1], selectedLikes[tweetId+1])
       setSelectedVote(-1)
       setVoteErr(0)
 
-      const response = await axios.post('http://127.0.0.1:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:selectedVote, fullname:fullname});
+      const response = await axios.post('http://127.0.0.1:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:selectedVote, fullname:fullname, like_dislike:selectedLike});
     } 
   }
 
@@ -138,7 +171,7 @@ function App() {
     if(0 < tweetId) {
       setTweetId(tweetId-1)
       console.log("id", tweetId-1)
-      handleSelectedItem(selectedTweets[tweetId-1])
+      handleSelectedItem(selectedTweets[tweetId-1], selectedLikes[tweetId-1])
       setSelectedVote(selectedTweets[tweetId-1])
     }
   }
@@ -163,13 +196,13 @@ function App() {
     e.preventDefault()
     setSelectedVote(1)
     if (tweetId == tweets.length-1) {
-      const response = await axios.post('http://127.0.0.1:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:1, fullname:fullname});
+      const response = await axios.post('http://127.0.0.1:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:1, fullname:fullname, like_dislike:selectedLike});
       thanksUser();
     }
     setColor(0);
     setSelectedTweets({...selectedTweets, [tweetId]: 1})
     // const response = await axios.post('http://127.0.0.1:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:1});
-    handleSelectedItem(1)
+    handleSelectedItem(1, selectedLike)
     // document.getElementById('next').click();
   }
 
@@ -182,7 +215,7 @@ function App() {
     setColor(0);
     setSelectedTweets({...selectedTweets, [tweetId]: 2})
     // const response = await axios.post('http://127.0.0.1:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:2});
-    handleSelectedItem(2)
+    handleSelectedItem(2, selectedLike)
     // document.getElementById('next').click();
   }
 
@@ -195,7 +228,7 @@ function App() {
     setColor(1);
     setSelectedTweets({...selectedTweets, [tweetId]: 3})
     // const response = await axios.post('http://127.0.0.1:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:3});
-    handleSelectedItem(3)
+    handleSelectedItem(3, selectedLike)
     // document.getElementById('next').click();
   }
 
@@ -208,21 +241,37 @@ function App() {
     setColor(2);
     setSelectedTweets({...selectedTweets, [tweetId]: 4})
     // const response = await axios.post('http://127.0.0.1:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:4});
-    handleSelectedItem(4)
+    handleSelectedItem(4, selectedLike)
     // document.getElementById('next').click();
   }
 
   const handleVote5 = async (e) => {
     e.preventDefault()
-    setSelectedVote(5)
+    setSelectedVote(5, selectedLike)
     if (tweetId == tweets.length-1) {
       thanksUser();
     }
     setColor(2);
     setSelectedTweets({...selectedTweets, [tweetId]: 5})
     // const response = await axios.post('http://127.0.0.1:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:5});
-    handleSelectedItem(5)
+    handleSelectedItem(5, selectedLike)
     // document.getElementById('next').click();
+  }
+
+  const handleLike = (e) => {
+    e.preventDefault()
+    document.getElementById('like-container').className = 'like-container-selected';
+    document.getElementById('dislike-container').className = 'like-container';
+    setSelectedLike("like")
+    setSelectedLikes({...selectedLikes, [tweetId]: "like"})
+  }
+
+  const handleDislike = (e) => {
+    e.preventDefault()
+    document.getElementById('like-container').className = 'like-container';
+    document.getElementById('dislike-container').className = 'like-container-selected';
+    setSelectedLike("dislike")
+    setSelectedLikes({...selectedLikes, [tweetId]: "dislike"})
   }
   
 
@@ -300,7 +349,7 @@ function App() {
 
     <div className='center-side'>
       <p className='header-text'>
-      "Please rate this tweet. A rating of <p className='green-text'>5</p> indicates that it's acceptable and it will be <p className='green-text'>Remained</p>, while a rating of <p className='red-text'>1</p> implies it should be <p className='red-text'>removed</p>. Kindly rate 5 tweets, and after rating each tweet, you will be directed to the next one."
+      "Please rate this tweet. A rating of <p className='green-text'>5</p> indicates that it's acceptable and it will be <p className='green-text'>Remained</p>, while a rating of <p className='red-text'>1</p> implies it should be <p className='red-text'>removed</p>.<br/><br/> Also, you can <p className='blue-text'>Like or dislike</p> a tweet, which is just identified that you like tweet or not and <p className='blue-text'>not related to removing the tweet.</p> Kindly please rate 15 tweets."
       </p>
 
       {
@@ -323,8 +372,13 @@ function App() {
       ?
       <div>
         <div className='centered'>
-    <p className='centered'>Please enter your name and click on the topic which is more interested to you to see the relevant tweets in the experiment.{err2 == 0? <div></div> :<div className='error'>Please enter your fullname.</div>}{err == 0? <div></div> :<div className='error'>Please select one of them!</div>}</p>
+    <p className='centered'>Please enter your name and age. Then click on the topic which is more interested to you to see the relevant tweets in the experiment.{err2 == 0? <div></div> :<div className='error'>Please enter your fullname.</div>}{err3 == 0? <div></div> :<div className='error'>Please enter your age.</div>}{err == 0? <div></div> :<div className='error'>Please select one of them!</div>}</p>
+    <div className='inputs-container'>
     <input id="fullname" class="name-input" type="text" placeholder="Full Name" />
+<div>
+<input id="age" class="name-input" type="text" placeholder="Age" /></div>
+    </div>
+   
     
     <div class="radio-buttons">
     <label class="custom-radio">
@@ -374,6 +428,15 @@ function App() {
     {tweets.length>0?tweetId==tweets.length?<div>Thanks for Your Time!</div>:JSON.parse(tweets[tweetId]).text:<div>There are no available tweets!</div>}
     {voteErr !== 1? <div></div> :<div className='error'>Please vote tweet by one of the following scores 1 to 5!</div>}
     </p>
+    
+    <div className='like-box'>
+      <div id="like-container" className='like-container'>
+        <button className=' like' id='like' onClick={handleLike} ></button>
+      </div>
+      <div id="dislike-container" className='like-container'>
+        <button className=' dislike' id='dislike' onClick={handleDislike} ></button>
+      </div>
+    </div>
     </div>
     }
     <button className='next' id="next" onClick={handleNext}></button>
