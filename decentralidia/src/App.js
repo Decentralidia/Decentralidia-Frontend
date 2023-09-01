@@ -32,7 +32,7 @@ function App() {
   const getTweets = async (category, fn, age) => {
     console.log("age")
     console.log(age)
-    const response = await axios.get('http://127.0.0.1:8000/tweets/', {
+    const response = await axios.get('http://104.234.1.53:8000/tweets/', {
       params: {category: category, fullname: fn, age:age, gender:"other"}
     });
     console.log(response.data.tweets)
@@ -160,7 +160,7 @@ function App() {
       setSelectedVote(-1)
       setVoteErr(0)
 
-      const response = await axios.post('http://127.0.0.1:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:selectedVote, fullname:fullname, like_dislike:selectedLike});
+      const response = await axios.post('http://104.234.1.53:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:selectedVote, fullname:fullname, like_dislike:selectedLike});
     } 
   }
 
@@ -196,12 +196,12 @@ function App() {
     e.preventDefault()
     setSelectedVote(1)
     if (tweetId == tweets.length-1) {
-      const response = await axios.post('http://127.0.0.1:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:1, fullname:fullname, like_dislike:selectedLike});
+      const response = await axios.post('http://104.234.1.53:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:1, fullname:fullname, like_dislike:selectedLike});
       thanksUser();
     }
     setColor(0);
     setSelectedTweets({...selectedTweets, [tweetId]: 1})
-    // const response = await axios.post('http://127.0.0.1:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:1});
+    // const response = await axios.post('http://104.234.1.53:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:1});
     handleSelectedItem(1, selectedLike)
     // document.getElementById('next').click();
   }
@@ -214,7 +214,7 @@ function App() {
     }
     setColor(0);
     setSelectedTweets({...selectedTweets, [tweetId]: 2})
-    // const response = await axios.post('http://127.0.0.1:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:2});
+    // const response = await axios.post('http://104.234.1.53:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:2});
     handleSelectedItem(2, selectedLike)
     // document.getElementById('next').click();
   }
@@ -227,7 +227,7 @@ function App() {
     }
     setColor(1);
     setSelectedTweets({...selectedTweets, [tweetId]: 3})
-    // const response = await axios.post('http://127.0.0.1:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:3});
+    // const response = await axios.post('http://104.234.1.53:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:3});
     handleSelectedItem(3, selectedLike)
     // document.getElementById('next').click();
   }
@@ -240,7 +240,7 @@ function App() {
     }
     setColor(2);
     setSelectedTweets({...selectedTweets, [tweetId]: 4})
-    // const response = await axios.post('http://127.0.0.1:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:4});
+    // const response = await axios.post('http://104.234.1.53:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:4});
     handleSelectedItem(4, selectedLike)
     // document.getElementById('next').click();
   }
@@ -253,7 +253,7 @@ function App() {
     }
     setColor(2);
     setSelectedTweets({...selectedTweets, [tweetId]: 5})
-    // const response = await axios.post('http://127.0.0.1:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:5});
+    // const response = await axios.post('http://104.234.1.53:8000/tweets/', {tweet_id:JSON.parse(tweets[tweetId]).id , vote:5});
     handleSelectedItem(5, selectedLike)
     // document.getElementById('next').click();
   }
