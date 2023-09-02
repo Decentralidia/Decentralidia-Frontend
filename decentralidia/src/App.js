@@ -448,7 +448,7 @@ function App() {
                 <div className='remove-box'></div>
                 <div className='box'>
                   <p className='header-text'>
-                    Should we remove this tweet?
+                    Should this tweet be remained? (1 means remove and 5 means it should be remained.)
                   </p>
                   <div className='buttonsContainer'>
                     <div className='remove'></div>
